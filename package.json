@@ -1,0 +1,32 @@
+{
+  "name": "lodestar-snap",
+  "version": "0.1.0",
+  "description": "Lodestar Light Client running in a Metamask Snap",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "mm-snap serve",
+    "build": "mm-snap build",
+    "lint": "mm-snap manifest --fix"
+  },
+  "dependencies": {
+    "@lodestar/light-client": "^1.20.0",
+    "@metamask/snaps-sdk": "^4.0.0",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10"
+  },
+  "devDependencies": {
+    "@metamask/snaps-cli": "^6.0.0",
+    "@types/node": "^20.0.0",
+    "assert": "^2.1.0",
+    "crypto-browserify": "^3.12.1",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "prettier": "^3.8.1",
+    "stream-browserify": "^3.0.0",
+    "typescript": "^5.0.0",
+    "url": "^0.11.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "version": "0.1.0",
+  "description": "Lodestar Light Client running in a Metamask Snap",
+  "proposedName": "Lodestar Snap",
+  "source": {
+    "shasum": "3dOuT8mNYh1AQooggVVOq+NOmudZZFxYQvBXihnqfHo=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "packageName": "lodestar-snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "endowment:rpc": {
+      "dapps": true,
+      "snaps": true
+    },
+    "endowment:network-access": {},
+    "endowment:webassembly": {},
+    "snap_dialog": {}
+  },
+  "platformVersion": "4.4.2",
+  "manifestVersion": "0.1"
+}
