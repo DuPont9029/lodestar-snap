@@ -3,7 +3,7 @@
   "description": "Lodestar Light Client running in a Metamask Snap",
   "proposedName": "Lodestar Snap",
   "source": {
-    "shasum": "3dOuT8mNYh1AQooggVVOq+NOmudZZFxYQvBXihnqfHo=",
+    "shasum": "7F95UnIj3uFinCSsqGI/HohM9aVnTIvkw51Xd9sbirg=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -19,6 +19,7 @@
     },
     "endowment:network-access": {},
     "endowment:webassembly": {},
+    "snap_manageState": {},
     "snap_dialog": {}
   },
   "platformVersion": "4.4.2",

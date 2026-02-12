@@ -50,10 +50,25 @@
         -webkit-text-fill-color: transparent;
       }
 
-      p.subtitle {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        margin: 0;
+      .btn {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 1rem;
+      }
+
+      .btn:hover {
+        background-color: var(--primary-hover);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
 
       .grid {
@@ -68,245 +83,140 @@
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 1.5rem;
-        box-shadow:
-          0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        transition: transform 0.2s;
       }
 
-      .card:hover {
-        transform: translateY(-2px);
-        border-color: var(--primary);
-      }
-
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .card-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin: 0;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .step-badge {
-        background: var(--border);
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        padding: 0.1rem 0.5rem;
-        border-radius: 9999px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .btn {
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 1rem;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-
-      .btn:hover:not(:disabled) {
-        background-color: var(--primary-hover);
-        box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
-      }
-
-      .btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background-color: var(--border);
-      }
-
-      .btn-outline {
-        background-color: transparent;
-        border: 2px solid var(--border);
-        color: var(--text);
-      }
-
-      .btn-outline:hover:not(:disabled) {
-        border-color: var(--primary);
-        background-color: rgba(99, 102, 241, 0.1);
-        box-shadow: none;
-      }
-
-      .output-area {
+      pre {
         background: var(--code-bg);
         padding: 1rem;
-        border-radius: 10px;
-        font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
-        font-size: 0.85rem;
-        color: #4ade80;
+        border-radius: 8px;
         overflow-x: auto;
-        border: 1px solid var(--border);
-        margin-top: 1rem;
-        white-space: pre-wrap;
-        min-height: 3rem;
-      }
-
-      .output-area:empty::before {
-        content: "Waiting for action...";
-        color: var(--border);
-        font-style: italic;
-      }
-
-      .logs-section {
-        margin-top: 2rem;
+        font-family: "Menlo", "Monaco", monospace;
+        font-size: 0.9em;
+        color: var(--success);
       }
 
       .status-indicator {
         display: inline-block;
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        background-color: var(--border);
+        background-color: #ef4444; /* Red */
         margin-right: 8px;
       }
 
       .status-indicator.active {
         background-color: var(--success);
-        box-shadow: 0 0 8px var(--success);
-      }
-
-      /* Icons styling (simple css shapes or text) */
-      .icon {
-        font-style: normal;
+        box-shadow: 0 0 10px var(--success);
       }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>Lodestar Snap</h1>
-        <p class="subtitle">Trustless Ethereum Light Client in your browser</p>
+        <h1>Lodestar Snap Dashboard</h1>
+        <p style="color: var(--text-muted)">
+          Connect MetaMask directly to the Light Client Network
+        </p>
       </header>
 
-      <div class="grid">
-        <!-- Step 1: Install -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span class="icon">🔌</span> Installation
-            </h2>
-            <span class="step-badge">Step 1</span>
-          </div>
-          <p>
-            Install the Lodestar Snap into MetaMask Flask to enable light client
-            capabilities.
-          </p>
-          <button class="btn connect">Install / Connect Snap</button>
+      <div class="card" style="margin-bottom: 2rem; text-align: center">
+        <h2>1. Connection</h2>
+        <div style="margin-bottom: 1rem">
+          <span id="status-dot" class="status-indicator"></span>
+          <span id="connection-status">Not Connected</span>
         </div>
-
-        <!-- Step 2: Initialize -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span class="icon">🚀</span> Initialization
-            </h2>
-            <span class="step-badge">Step 2</span>
-          </div>
-          <p>
-            Boot up the Lodestar Light Client. This syncs with the Beacon Chain.
-          </p>
-          <button id="initLodestar" class="btn btn-outline">
-            Initialize Lodestar
-          </button>
-        </div>
+        <button id="connect-btn" class="btn">Connect & Install Snap</button>
       </div>
 
       <div class="grid">
-        <!-- Step 3: Status -->
         <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span class="icon">📡</span> Network Status
-            </h2>
-            <span class="step-badge">Check</span>
-          </div>
-          <p>
-            Get the latest finalized head slot directly from the light client.
-          </p>
-          <button id="getHead" class="btn btn-outline">Get Head Slot</button>
-          <div id="headOutput" class="output-area"></div>
+          <h3>2. Initialization</h3>
+          <p>Start the internal Lodestar node.</p>
+          <button id="init-btn" class="btn" disabled>Initialize Node</button>
+          <div id="init-output" style="margin-top: 1rem"></div>
         </div>
 
-        <!-- Step 4: Wallet -->
         <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span class="icon">💰</span> Verified Balance
-            </h2>
-            <span class="step-badge">Verify</span>
-          </div>
-          <p>
-            Fetch your wallet balance, verified against the light client's
-            state.
-          </p>
-          <div style="display: flex; gap: 0.5rem; flex-direction: column">
-            <button id="connectWallet" class="btn btn-outline">
-              Connect Wallet
+          <h3>3. RPC Bridge Test</h3>
+          <p>Call standard ETH methods via Snap.</p>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+            <button id="get-chain-btn" class="btn" disabled>eth_chainId</button>
+            <button id="get-block-btn" class="btn" disabled>
+              eth_blockNumber
             </button>
-            <button id="getBalance" class="btn" disabled>
-              Get Balance via Snap
+            <button id="get-balance-btn" class="btn" disabled>
+              eth_getBalance (Vitalik)
+            </button>
+            <button
+              id="kill-client-btn"
+              class="btn"
+              style="background-color: #ef4444"
+              disabled
+            >
+              Simulate Crash
             </button>
           </div>
-          <div id="balanceOutput" class="output-area"></div>
+          <pre id="rpc-output" style="margin-top: 1rem">
+Waiting for commands...</pre
+          >
         </div>
-      </div>
-
-      <div class="card logs-section">
-        <div class="card-header">
-          <h2 class="card-title"><span class="icon">📝</span> System Logs</h2>
-        </div>
-        <pre
-          id="output"
-          class="output-area"
-          style="min-height: 100px; color: var(--text-muted)"
-        ></pre>
       </div>
     </div>
 
     <script>
-      const snapId = `local:http://localhost:8080`;
-      let userAddress = null;
-
-      const connectButton = document.querySelector("button.connect");
-      const initButton = document.querySelector("#initLodestar");
-      const getHeadButton = document.querySelector("#getHead");
-      const connectWalletButton = document.querySelector("#connectWallet");
-      const getBalanceButton = document.querySelector("#getBalance");
+      const snapId = `local:http://localhost:8081`; // Default local snap ID
+      const connectBtn = document.getElementById("connect-btn");
+      const initBtn = document.getElementById("init-btn");
+      const getChainBtn = document.getElementById("get-chain-btn");
+      const getBlockBtn = document.getElementById("get-block-btn");
+      const getBalanceBtn = document.getElementById("get-balance-btn");
+      const killClientBtn = document.getElementById("kill-client-btn");
+      const statusDot = document.getElementById("status-dot");
+      const connectionStatus = document.getElementById("connection-status");
+      const rpcOutput = document.getElementById("rpc-output");
 
       // Helper to log
-      function log(elId, msg) {
-        const el = document.getElementById(elId);
-        if (el) {
-          const content =
-            typeof msg === "object" ? JSON.stringify(msg, null, 2) : msg;
-          el.innerText = content;
-          // Add highlight effect
-          el.style.borderColor = "var(--primary)";
-          setTimeout(() => (el.style.borderColor = "var(--border)"), 300);
-        }
-      }
+      const log = (el, msg) => {
+        const timestamp = new Date().toLocaleTimeString();
 
-      connectButton.addEventListener("click", async () => {
+        // Deep clone to avoid mutating original
+        let displayMsg = JSON.parse(JSON.stringify(msg));
+
+        // Caso 1: eth_getBalance (oggetto complesso con .balance o .result.balance)
+        // Se è annidato in result:
+        const payload = displayMsg.result || displayMsg;
+
+        if (payload.balance) {
+          try {
+            const wei = BigInt(payload.balance);
+            const eth = Number(wei) / 1e18;
+            // Aggiungiamo il campo leggibile direttamente nell'output
+            if (displayMsg.result) {
+              displayMsg.result.human_readable = `${eth.toFixed(4)} ETH`;
+            } else {
+              displayMsg.human_readable = `${eth.toFixed(4)} ETH`;
+            }
+          } catch (e) {}
+        }
+
+        // Caso 2: eth_blockNumber (stringa hex diretta)
+        else if (
+          typeof msg.result === "string" &&
+          msg.result.startsWith("0x")
+        ) {
+          try {
+            const decimal = parseInt(msg.result, 16);
+            if (!isNaN(decimal)) {
+              displayMsg.human_readable_block = decimal.toLocaleString();
+            }
+          } catch (e) {}
+        }
+
+        el.innerText = `[${timestamp}] ${JSON.stringify(displayMsg, null, 2)}`;
+      };
+
+      // 1. Connect
+      connectBtn.addEventListener("click", async () => {
         try {
           await window.ethereum.request({
             method: "wallet_requestSnaps",
@@ -314,92 +224,113 @@
               [snapId]: {},
             },
           });
-          log("output", "✅ Snap installed successfully!");
-          connectButton.innerText = "Snap Installed";
-          connectButton.disabled = true;
+          statusDot.classList.add("active");
+          connectionStatus.innerText = "Snap Installed & Connected";
+          initBtn.disabled = false;
+          connectBtn.disabled = true;
+          connectBtn.innerText = "Connected";
         } catch (err) {
-          log("output", `Error: ${err.message || err}`);
+          console.error(err);
+          alert("Connection failed: " + err.message);
         }
       });
 
-      initButton.addEventListener("click", async () => {
-        initButton.innerText = "Initializing...";
-        initButton.disabled = true;
+      // 2. Initialize
+      initBtn.addEventListener("click", async () => {
+        initBtn.innerText = "Initializing... (Wait ~10s)";
+        initBtn.disabled = true;
         try {
           const result = await window.ethereum.request({
             method: "wallet_invokeSnap",
             params: {
-              snapId,
+              snapId: snapId,
               request: { method: "initialize" },
             },
           });
-          log("output", result);
-          initButton.innerText = "Initialized 🚀";
-          initButton.classList.remove("btn-outline");
-          initButton.classList.add("btn");
-          initButton.style.backgroundColor = "var(--success)";
-          initButton.style.color = "#fff";
+          document.getElementById("init-output").innerHTML =
+            `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+
+          // Enable RPC buttons
+          getChainBtn.disabled = false;
+          getBlockBtn.disabled = false;
+          getBalanceBtn.disabled = false;
+          killClientBtn.disabled = false;
+          initBtn.innerText = "Node Running";
         } catch (err) {
-          log("output", `Error: ${err.message || err}`);
-          initButton.innerText = "Initialize Lodestar";
-          initButton.disabled = false;
+          console.error(err);
+          document.getElementById("init-output").innerText =
+            "Error: " + err.message;
+          initBtn.disabled = false;
+          initBtn.innerText = "Retry Initialize";
         }
       });
 
-      getHeadButton.addEventListener("click", async () => {
+      // 3. RPC Tests
+      getChainBtn.addEventListener("click", async () => {
         try {
-          const result = await window.ethereum.request({
+          const res = await window.ethereum.request({
             method: "wallet_invokeSnap",
             params: {
-              snapId,
-              request: { method: "getHead" },
+              snapId: snapId,
+              request: { method: "eth_chainId" },
             },
           });
-          log("headOutput", result);
+          log(rpcOutput, { method: "eth_chainId", result: res });
         } catch (err) {
-          log("headOutput", `Error: ${err.message || err}`);
+          log(rpcOutput, { error: err.message });
         }
       });
 
-      connectWalletButton.addEventListener("click", async () => {
+      getBlockBtn.addEventListener("click", async () => {
         try {
-          const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-          });
-          userAddress = accounts[0];
-          connectWalletButton.innerText = `Connected: ${userAddress.substring(0, 6)}...${userAddress.substring(userAddress.length - 4)}`;
-          connectWalletButton.classList.add("btn-outline");
-          connectWalletButton.style.borderColor = "var(--success)";
-          connectWalletButton.style.color = "var(--success)";
-          getBalanceButton.disabled = false;
-        } catch (err) {
-          log("balanceOutput", `Wallet Error: ${err.message}`);
-        }
-      });
-
-      getBalanceButton.addEventListener("click", async () => {
-        if (!userAddress) return;
-        const originalText = getBalanceButton.innerText;
-        getBalanceButton.innerText = "Verifying...";
-        getBalanceButton.disabled = true;
-
-        try {
-          const result = await window.ethereum.request({
+          const res = await window.ethereum.request({
             method: "wallet_invokeSnap",
             params: {
-              snapId,
+              snapId: snapId,
+              request: { method: "eth_blockNumber" },
+            },
+          });
+          log(rpcOutput, { method: "eth_blockNumber", result: res });
+        } catch (err) {
+          log(rpcOutput, { error: err.message });
+        }
+      });
+
+      getBalanceBtn.addEventListener("click", async () => {
+        try {
+          const vitalik = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+          log(rpcOutput, { status: "Fetching balance securely..." });
+          const res = await window.ethereum.request({
+            method: "wallet_invokeSnap",
+            params: {
+              snapId: snapId,
               request: {
-                method: "getBalance",
-                params: { address: userAddress },
+                method: "eth_getBalance",
+                params: [vitalik],
               },
             },
           });
-          log("balanceOutput", result);
+          log(rpcOutput, { method: "eth_getBalance", result: res });
         } catch (err) {
-          log("balanceOutput", `Error: ${err.message || err}`);
-        } finally {
-          getBalanceButton.innerText = originalText;
-          getBalanceButton.disabled = false;
+          log(rpcOutput, { error: err.message });
+        }
+      });
+
+      killClientBtn.addEventListener("click", async () => {
+        try {
+          log(rpcOutput, { status: "Killing client..." });
+          const res = await window.ethereum.request({
+            method: "wallet_invokeSnap",
+            params: {
+              snapId: snapId,
+              request: { method: "debug_killClient" },
+            },
+          });
+          log(rpcOutput, { method: "debug_killClient", result: res });
+          initBtn.innerText = "Node Killed (Simulated)";
+          // Non disabilitiamo i bottoni RPC per testare la persistenza
+        } catch (err) {
+          log(rpcOutput, { error: err.message });
         }
       });
     </script>
