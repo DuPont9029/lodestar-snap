@@ -255,7 +255,8 @@ Waiting for commands...</pre
           getBlockBtn.disabled = false;
           getBalanceBtn.disabled = false;
           killClientBtn.disabled = false;
-          initBtn.innerText = "Node Running";
+          initBtn.innerText = "Re-Initialize Node";
+          initBtn.disabled = false;
         } catch (err) {
           console.error(err);
           document.getElementById("init-output").innerText =
@@ -327,7 +328,8 @@ Waiting for commands...</pre
             },
           });
           log(rpcOutput, { method: "debug_killClient", result: res });
-          initBtn.innerText = "Node Killed (Simulated)";
+          initBtn.innerText = "Node Killed - Click to Restart";
+          initBtn.disabled = false;
           // Non disabilitiamo i bottoni RPC per testare la persistenza
         } catch (err) {
           log(rpcOutput, { error: err.message });
